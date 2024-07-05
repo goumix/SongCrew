@@ -2,14 +2,14 @@
 pragma solidity 0.8.25;
 
 import "forge-std/Test.sol";
-import "../contracts/Lock.sol";
+import "../contracts/Songcrew.sol";
 
-contract LockTest is Test {
+contract SongcrewTest is Test {
 
-  Lock lock;
+  Songcrew songcrew;
 
   function beforeEach() public {
-    lock = new Lock(100);
+    songcrew = new Songcrew();
   }
 
   function test_lock() public pure {
