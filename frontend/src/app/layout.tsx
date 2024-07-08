@@ -1,13 +1,13 @@
 import "./globals.css";
 import type { Metadata } from "next";
-import { Inter as FontSans } from "next/font/google"
+import { IBM_Plex_Sans } from "next/font/google";
 import { cn } from "@/lib/utils"
 import RainbowkitAndWagmiProvider from "./RainbowKitAndWagmiProvider";
 import Layout from "@/components/Layout";
 
-const fontSans = FontSans({
+const fontSans = IBM_Plex_Sans({
   subsets: ["latin"],
-  variable: "--font-sans",
+  weight: ["400", "500", "600", "700"],
 })
 
 export const metadata: Metadata = {
@@ -21,8 +21,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <head />
       <body
         className={cn(
-          "min-h-screen bg-background font-sans antialiased",
-          fontSans.variable
+          "min-h-screen bg-background antialiased",
+          fontSans.className
         )}
       >
         <RainbowkitAndWagmiProvider>
