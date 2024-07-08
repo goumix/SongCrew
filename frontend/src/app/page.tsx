@@ -7,7 +7,7 @@ export default function Home() {
     <div className="h-full">
       <Image className="absolute bottom-0 z-0" src="/songcrew-image-2-removebg-preview (2).png" alt="Next.js Logo" width={600} height={600} />
       <div className="flex flex-row items-center px-8">
-        <div className="w-1/4"></div>
+        <div className="w-1/3"></div>
         <div className="w-full h-screen flex flex-col items-center justify-center pb-32 gap-10">
           <p className="text-center text-lg">Become the producer of your favorite artists !</p>
           <h1 className="text-8xl text-center"><strong>Welcome to<br/> SongCrew</strong></h1>
@@ -26,7 +26,7 @@ export default function Home() {
             </Card>
           </div>
         </div>
-        <div className="w-1/4 flex flex-col gap-2 pb-32">
+        <div className="w-1/3 flex flex-col gap-2 pb-32">
           <h1 className="text-2xl text-center"><strong>Our adivsors</strong></h1>
           <Link href="https://www.linkedin.com/in/alexandre-roux-1b1b1b1b1/">
             <Card>
