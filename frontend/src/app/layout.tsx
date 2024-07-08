@@ -3,7 +3,7 @@ import type { Metadata } from "next";
 import { IBM_Plex_Sans } from "next/font/google";
 import { cn } from "@/lib/utils"
 import RainbowkitAndWagmiProvider from "./RainbowKitAndWagmiProvider";
-import Layout from "@/components/Layout";
+import Layout from "@/components/shared/Layout";
 
 const fontSans = IBM_Plex_Sans({
   subsets: ["latin"],
