@@ -11,7 +11,7 @@ const Header = () => {
         <nav className="flex flex-row gap-6 py-1 px-6 border rounded-md bg-opacity-5 bg-white">
           <Link href="/songs">Songs</Link>
           <Link href="/createproject">Create your project</Link>
-          <Link href="/follow">Following projects</Link>
+          <Link href="/followingproject">Following projects</Link>
           <Link href="/whitepaper">Whitepaper</Link>
         </nav>
       </div>
