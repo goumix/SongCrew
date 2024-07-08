@@ -2,11 +2,9 @@
 pragma solidity ^0.8.24;
 
 import "@openzeppelin/contracts/token/ERC1155/ERC1155.sol";
-import "@openzeppelin/contracts/utils/Counters.sol";
 
 contract Songcrew is ERC1155 {
-  using Counters for Counters.Counter;
-  Counters.Counter private _tokenIds;
+  uint256 private _tokenIds;
 
   struct Project {
     string artist;
@@ -38,9 +36,9 @@ contract Songcrew is ERC1155 {
     uint _numberOfCopies
   ) public {
     require(msg.sender != address(0), "ERC1155: mint to the zero address");
-    _tokenIds.increment();
+    _tokenIds++;
     projects.push(Project(_artist, _idSACEM, _title, _genre, _description, _numberOfCopies));
-    uint256 newItemId = _tokenIds.current();
+    uint256 newItemId = _tokenIds;
     _mint(msg.sender, newItemId, _numberOfCopies, "");
     emit ProjectCreated(_artist, _idSACEM, _title, _genre, _description, _numberOfCopies);
   }
