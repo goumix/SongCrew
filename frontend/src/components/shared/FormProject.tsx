@@ -3,11 +3,8 @@ import { Input } from "../ui/Input"
 import { useState, useEffect } from "react"
 import { Button } from "../ui/button"
 import { contractAbi, contractAddress } from "@/constants"
-import { useAccount, useReadContract, useWriteContract, useWaitForTransactionReceipt } from "wagmi"
-import { parseAbiItem } from "viem"
-import { publicClient } from "@/utils/client"
+import { useAccount, useWriteContract, useWaitForTransactionReceipt } from "wagmi"
 import { useToast } from "../ui/toaster"
-import { write } from "fs"
 
 const FormProject = () => {
 
