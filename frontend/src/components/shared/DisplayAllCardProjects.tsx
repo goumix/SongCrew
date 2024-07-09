@@ -1,7 +1,5 @@
 'use client';
 import { useState, useEffect } from "react";
-import { useToast } from "@/components/ui/use-toast";
-import { useWriteContract, useWaitForTransactionReceipt, useAccount , useReadContract} from 'wagmi'
 import { contractAddress, contractAbi } from "@/constants";
 import { publicClient } from "@/utils/client";
 import { parseAbiItem } from "viem";
@@ -9,9 +7,6 @@ import CardProject from "../ui/CardProject";
 
 
 const DisplayAllCardProjects = () => {
-
-  const { toast } = useToast();
-  const { address } = useAccount();
   const [projects, setProjects] = useState<any[]>([]);
 
   const getProjects = async () => {
