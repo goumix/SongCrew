@@ -6,6 +6,19 @@ import { contractAbi, contractAddress } from "@/constants"
 import { useAccount, useWriteContract, useWaitForTransactionReceipt } from "wagmi"
 import { useToast } from "../ui/toaster"
 
+const categories: string[] = [
+  "Pop",
+  "Rock",
+  "Hip-Hop/Rap",
+  "Jazz",
+  "Classical",
+  "Electronic",
+  "R&B/Soul",
+  "Country",
+  "Reggae",
+  "Blues"
+]
+
 const FormProject = () => {
 
   const { address } = useAccount();
@@ -68,7 +81,17 @@ const FormProject = () => {
         <Input type="text" placeholder="Project title" onChange={(e) => setProjectTitle(e.target.value)} />
         {/* faire des categories */}
         <p>Genre :</p>
-        <Input type="text" placeholder="Genre" onChange={(e) => setGenre(e.target.value)} />
+        <div className="flex flex-wrap gap-2">
+          {categories.map((category, index) => (
+            <div
+            key={index}
+            className={`w-auto border py-1 px-2 rounded cursor-pointer ${genre === category ? 'border-sky-500' : 'border-white'}`}
+            onClick={() => setGenre(category)}
+          >
+            <p className={`${genre === category ? 'text-sky-500' : 'text-white'}`}>{category}</p>
+          </div>
+          ))}
+        </div>
         <p>Project description :</p>
         <Input type="text" placeholder="Project description" onChange={(e) => setProjectDescription(e.target.value)} />
         <p>How much copyright would you like to transfer ?</p>
