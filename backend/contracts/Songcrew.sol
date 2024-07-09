@@ -19,6 +19,7 @@ contract Songcrew is ERC1155 {
   Project[] projects;
 
   event ProjectCreated(address addressArtist, string artist, string idSACEM, string title, string genre, string description, uint numberOfCopies);
+  event ProjectCreatedNumber(uint256 projectId);
 
   constructor() ERC1155("https://songcrew.com/api/project/{id}.json") {}
 
@@ -40,9 +41,10 @@ contract Songcrew is ERC1155 {
     uint256 newItemId = _tokenIds;
     _mint(msg.sender, newItemId, _numberOfCopies, "");
     emit ProjectCreated(msg.sender, _artist, _idSACEM, _title, _genre, _description, _numberOfCopies);
+    emit ProjectCreatedNumber(projects.length - 1);
   }
 
-  function getAllProjects() public view returns (Project[] memory) {
-    return projects;
+  function getOneProject(uint _id) public view returns (Project memory) {
+    return projects[_id];
   }
 }
