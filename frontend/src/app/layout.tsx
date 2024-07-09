@@ -1,6 +1,7 @@
 import "./globals.css";
 import type { Metadata } from "next";
 import { IBM_Plex_Sans } from "next/font/google";
+import { Toaster } from "@/components/ui/toaster";
 import { cn } from "@/lib/utils"
 import RainbowkitAndWagmiProvider from "./RainbowKitAndWagmiProvider";
 import Layout from "@/components/shared/Layout";
@@ -36,6 +37,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             {children}
           </Layout>
         </RainbowkitAndWagmiProvider>
+        <Toaster />
       </body>
     </html>
   )
