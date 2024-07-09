@@ -17,14 +17,15 @@ contract SongcrewTest is Test {
 
   function testFail_CreateProjectWithAddress0() public {
     vm.prank(address(0));
-    songcrew.CreateProject("artist", "idSACEM", "title", "genre", "description", 1);
+    songcrew.createProject("artist", "idSACEM", "title", "genre", "description", 1);
   }
 
   function test_CreateProject() public {
     vm.prank(_user1);
-    songcrew.CreateProject("artist", "idSACEM", "title", "genre", "description", 1);
+    songcrew.createProject("artist", "idSACEM", "title", "genre", "description", 1);
     Songcrew.Project[] memory projects = songcrew.getAllProjects();
     assertEq(projects.length, 1);
+    assertEq(projects[0].addressArtist, _user1);
     assertEq(projects[0].artist, "artist");
     assertEq(projects[0].idSACEM, "idSACEM");
     assertEq(projects[0].title, "title");
