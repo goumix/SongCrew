@@ -47,4 +47,8 @@ contract Songcrew is ERC1155 {
   function getOneProject(uint _id) public view returns (Project memory) {
     return projects[_id];
   }
+
+  function getAllProjects() public view returns (Project[] memory) {
+    return projects;
+  }
 }
