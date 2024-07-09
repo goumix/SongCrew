@@ -1,4 +1,4 @@
-const CardProject = () => {
+const CardProject = ({ project }: any) => {
   return (
     <div>
 
