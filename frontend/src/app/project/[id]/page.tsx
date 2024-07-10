@@ -1,3 +1,4 @@
+/* eslint-disable react/no-unescaped-entities */
 'use client'
 import { publicClient } from '@/utils/client'
 import { useState, useEffect } from "react"
@@ -38,8 +39,8 @@ const Project = ({ params }: { params: { id: string }}) => {
           <p><strong>Artist :</strong> {project?.artist}</p>
           <p><strong>Description :</strong> {project?.description}</p>
           <p><strong>Number of NFTs remaining :</strong> {Number(project?.numberOfCopies)}</p>
-          <p><strong>Number of NFT you buy :</strong> {amount}</p>
-          <div className='w-2/3 flex flex-row justify-around gap-4'>
+          <p>Support the project by purchasing <strong>{amount}</strong> NFTs for <strong>{amount}</strong> of the artist's royalties</p>
+          <div className='w-3/4 flex flex-row justify-around gap-4'>
             <Slider defaultValue={[1]} max={Number(project?.numberOfCopies)} min={1} step={1} className="py-2" onValueChange={(e) => setAmount(e)}/>
             <Button>Buy</Button>
           </div>
