@@ -1,6 +1,34 @@
 import Card from "@/components/ui/Card";
+import CardAdvisor from "@/components/ui/CardAdvisor";
 import Image from "next/image";
 import Link from "next/link";
+
+const adivsors = [
+  {
+    name: "Cécile Tesson",
+    role: "Blockchain consultant",
+    image: "/Cecile.jpeg",
+    link: "https://www.linkedin.com/in/c%C3%A9cile-tesson-a87a8068/",
+  },
+  {
+    name: "Leopold Saingre",
+    role: "Blockchain consultant",
+    image: "/Leopold.jpeg",
+    link: "https://www.linkedin.com/in/leopold-saingre-6b55682bb/",
+  },
+  {
+    name: "Thomas Desmay",
+    role: "Blockchain consultant",
+    image: "/Thomas.jpeg",
+    link: "https://www.linkedin.com/in/thomas-desmay-b8a8b2198/",
+  },
+  {
+    name: "Goumix",
+    role: "Blockchain developer",
+    image: "/Goumix.jpeg",
+    link: "https://github.com/goumix",
+  },
+];
 
 export default function Home() {
   return (
@@ -28,39 +56,9 @@ export default function Home() {
         </div>
         <div className="w-1/3 flex flex-col gap-2 pb-32">
           <h1 className="text-2xl text-center"><strong>Our adivsors</strong></h1>
-          <Link href="https://www.linkedin.com/in/alexandre-roux-1b1b1b1b1/">
-            <Card>
-              <div className="flex flex-col justify-start gap-2">
-                <div className="flex flex-row gap-2">
-                  <Image src="/Profil.png" alt="Goumix" width={25} height={25} className="rounded-full aspect-square" />
-                  <p className="text-center">@goumix</p>
-                </div>
-                <p>Developpeur</p>
-              </div>
-            </Card>
-          </Link>
-          <Link href="https://www.linkedin.com/in/alexandre-roux-1b1b1b1b1/">
-            <Card>
-              <div className="flex flex-col justify-start gap-2">
-                <div className="flex flex-row gap-2">
-                  <Image src="/Profil.png" alt="Goumix" width={25} height={25} className="rounded-full aspect-square" />
-                  <p className="text-center">@goumix</p>
-                </div>
-                <p>Developpeur</p>
-              </div>
-            </Card>
-          </Link>
-          <Link href="https://www.linkedin.com/in/alexandre-roux-1b1b1b1b1/">
-            <Card>
-              <div className="flex flex-col justify-start gap-2">
-                <div className="flex flex-row gap-2">
-                  <Image src="/Profil.png" alt="Goumix" width={25} height={25} className="rounded-full aspect-square" />
-                  <p className="text-center">@goumix</p>
-                </div>
-                <p>Developpeur</p>
-              </div>
-            </Card>
-          </Link>
+          {adivsors.map((advisor, index) => (
+              <CardAdvisor key={index} name={advisor.name} role={advisor.role} image={advisor.image} link={advisor.link} />
+          ))}
         </div>
       </div>
     </div>
