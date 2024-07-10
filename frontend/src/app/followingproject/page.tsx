@@ -1,4 +1,5 @@
 'use client'
+import DisplayAllCardProjectsFollowing from "@/components/shared/DisplayAllCardProjectsFollowing";
 import NotConnected from "@/components/shared/NotConnected";
 import { useAccount } from "wagmi";
 
@@ -7,12 +8,10 @@ const FollowingProject = () => {
   const { isConnected } = useAccount();
 
   return (
-    <div className='w-full p-10'>
+    <div className='w-full min-h-screen p-10'>
       <h1><strong>Following projects</strong></h1>
       {isConnected ? (
-        <div>
-          <p>Connected</p>
-        </div>
+        <DisplayAllCardProjectsFollowing />
       ) : (
         <NotConnected message="Please connect your wallet to see your following projects" />
       )}
