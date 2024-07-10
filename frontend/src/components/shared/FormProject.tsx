@@ -5,6 +5,7 @@ import { Button } from "../ui/button"
 import { contractAbi, contractAddress } from "@/constants"
 import { useAccount, useWriteContract, useWaitForTransactionReceipt } from "wagmi"
 import { useToast } from "../ui/toaster"
+import { Slider } from "../ui/slider"
 
 const categories: string[] = [
   "Pop",
@@ -28,7 +29,7 @@ const FormProject = () => {
   const [projectTitle, setProjectTitle] = useState<string>("");
   const [genre, setGenre] = useState<string>("");
   const [projectDescription, setProjectDescription] = useState<string>("");
-  const [amount, setAmount] = useState<number>(0);
+  const [amount, setAmount] = useState<number>(25);
 
   const { data: hash, isPending, error, writeContract } = useWriteContract();
 
@@ -56,17 +57,17 @@ const FormProject = () => {
 
   useEffect(() => {
     if (isSuccess) {
+      toast({
+          title: "Project created",
+          description: "Your project has been created successfully",
+          className: 'bg-sky-500'
+      });
       setProjectArtist('');
       setIdSacem('');
       setProjectTitle('');
       setGenre('');
       setProjectDescription('');
-      setAmount(0);
-      toast({
-          title: "transaction validated",
-          description: "addres  added to whitelist",
-          className: 'bg-green-600'
-      });
+      setAmount(25);
     }
   }, [isSuccess, toast])
 
@@ -94,8 +95,11 @@ const FormProject = () => {
         </div>
         <p>Project description :</p>
         <Input type="text" placeholder="Project description" onChange={(e) => setProjectDescription(e.target.value)} />
-        <p>How much copyright would you like to transfer ?</p>
-        <Input type="number" placeholder="Amount" onChange={(e) => setAmount(e.target.value)} />
+        <div className="flex flex-row justify-between">
+          <p>How much copyright would you like to transfer ?</p>
+          <p>{amount}% of copyright for {amount} NTFs</p>
+        </div>
+        <Slider defaultValue={[25]} max={49} min={1} step={1} className="py-2" onValueChange={(e) => setAmount(e)}/>
         <Button disabled={isPending} onClick={handleSubmit}>Create project</Button>
       </div>
       <div className="w-1/2"></div>
