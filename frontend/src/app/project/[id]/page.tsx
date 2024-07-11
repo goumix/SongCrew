@@ -32,7 +32,7 @@ const Project = ({ params }: { params: { id: string }}) => {
 
   const handleBuy = async () => {
     console.log(amount, Number(project?.numberOfCopies))
-    if (amount < Number(project?.numberOfCopies)) {
+    if (amount <= Number(project?.numberOfCopies)) {
       writeContract({
         address: contractAddress,
         abi: contractAbi,
@@ -79,12 +79,18 @@ const Project = ({ params }: { params: { id: string }}) => {
           </div>
           <p><strong>Artist :</strong> {project?.artist}</p>
           <p><strong>Description :</strong> {project?.description}</p>
-          <p><strong>Number of NFTs remaining :</strong> {Number(project?.numberOfCopies)}</p>
-          <p>Support the project by purchasing <strong>{amount}</strong> NFTs for <strong>{amount}</strong> of the artist's royalties</p>
-          <div className='w-3/4 flex flex-row justify-around gap-4'>
-            <Slider defaultValue={[1]} max={Number(project?.numberOfCopies)} min={1} step={1} className="py-2" onValueChange={(e) => setAmount(e[0])}/>
-            <Button onClick={handleBuy}>Buy</Button>
-          </div>
+          {(Number(project?.numberOfCopies) === 0) ?
+            <p><strong>Project is sold out</strong></p>
+          : (
+            <>
+              <p><strong>Number of NFTs remaining :</strong> {Number(project?.numberOfCopies)}</p>
+              <p>Support the project by purchasing <strong>{amount}</strong> NFTs for <strong>{amount}</strong> of the artist's royalties</p>
+              <div className='w-3/4 flex flex-row justify-around gap-4'>
+                <Slider defaultValue={[1]} max={Number(project?.numberOfCopies)} min={1} step={1} className="py-2" onValueChange={(e) => setAmount(e[0])}/>
+                <Button onClick={handleBuy}>Buy</Button>
+              </div>
+            </>
+          )}
         </div>
       </div>
     </div>
