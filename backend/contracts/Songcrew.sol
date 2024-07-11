@@ -37,6 +37,8 @@ contract Songcrew is ERC1155 {
   event ProjectCreated(address addressArtist, string artist, string idSACEM, string title, string genre, string description, uint numberOfCopies);
   /// @notice An event emitted when a project is created with the number of the project in the array
   event ProjectCreatedNumber(uint256 projectId);
+  /// @notice An event emitted when a project is bought
+  event ProjectBought(address buyer, uint projectId, uint amount);
 
   constructor() ERC1155("https://songcrew.com/api/project/{id}.json") {}
 
@@ -102,5 +104,6 @@ contract Songcrew is ERC1155 {
     safeTransferFrom(projects[_id].addressArtist, msg.sender, _id, _amount, "");
     projects[_id].numberOfCopies -= _amount;
     _setApprovalForAll(projects[_id].addressArtist, msg.sender, false);
+    emit ProjectBought(msg.sender, _id, _amount);
   }
 }
