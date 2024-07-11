@@ -3,14 +3,20 @@
 import { publicClient } from '@/utils/client'
 import { useState, useEffect } from "react"
 import { contractAddress, contractAbi } from "@/constants";
+import { useAccount, useWriteContract, useWaitForTransactionReceipt } from "wagmi"
+import { useToast } from "@/components/ui/toaster"
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Slider } from '@/components/ui/slider';
 
 const Project = ({ params }: { params: { id: string }}) => {
 
+  const { address } = useAccount();
+
   const [project, setProject] = useState<any>(null);
   const [amount, setAmount] = useState<number>(1);
+
+  const { toast } = useToast();
 
   const getProject = async () => {
     const set = await publicClient.readContract({
@@ -22,9 +28,44 @@ const Project = ({ params }: { params: { id: string }}) => {
     setProject(set);
   }
 
+  const { data: hash, isPending, error, writeContract } = useWriteContract();
+
+  const handleBuy = async () => {
+    console.log(amount, Number(project?.numberOfCopies))
+    if (amount < Number(project?.numberOfCopies)) {
+      writeContract({
+        address: contractAddress,
+        abi: contractAbi,
+        functionName: 'buyNft',
+        account: address,
+        args: [params.id, amount]
+      })
+    } else {
+      toast({
+        title: "Error",
+        description: "Please select a valid amount of NFTs to purchase",
+        className: 'bg-red-600'
+      })
+    }
+  }
+
+  const { isLoading: isConfirming, isSuccess, error: errorConfirming } = useWaitForTransactionReceipt({ hash });
+
   useEffect(() => {
     getProject();
   }, []);
+
+  useEffect(() => {
+    if (isSuccess) {
+      toast({
+          title: "Project purchased",
+          description: "Your project has been purchased successfully",
+          className: 'bg-sky-500'
+      });
+      setAmount(1);
+      getProject();
+    }
+  }, [isSuccess, toast])
 
   return (
     <div className='w-full min-h-screen flex flex-col p-10'>
@@ -41,8 +82,8 @@ const Project = ({ params }: { params: { id: string }}) => {
           <p><strong>Number of NFTs remaining :</strong> {Number(project?.numberOfCopies)}</p>
           <p>Support the project by purchasing <strong>{amount}</strong> NFTs for <strong>{amount}</strong> of the artist's royalties</p>
           <div className='w-3/4 flex flex-row justify-around gap-4'>
-            <Slider defaultValue={[1]} max={Number(project?.numberOfCopies)} min={1} step={1} className="py-2" onValueChange={(e) => setAmount(e)}/>
-            <Button>Buy</Button>
+            <Slider defaultValue={[1]} max={Number(project?.numberOfCopies)} min={1} step={1} className="py-2" onValueChange={(e) => setAmount(e[0])}/>
+            <Button onClick={handleBuy}>Buy</Button>
           </div>
         </div>
       </div>
