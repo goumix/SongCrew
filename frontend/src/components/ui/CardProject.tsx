@@ -13,7 +13,10 @@ const CardProject = ({ id, project }: any) => {
           </div>
           <p>Artist : {project.details.artist}</p>
           <p>Description : {project.details.description}</p>
-          <p>Number of NFTs remaining : {Number(project.details.numberOfCopies)}</p>
+          {(Number(project.details.numberOfCopies) === 0) ?
+            <p><strong>Project sold out</strong></p> :
+            <p>Number of NFTs remaining : {Number(project.details.numberOfCopies)}</p>
+          }
         </div>
       </Card>
     </Link>
