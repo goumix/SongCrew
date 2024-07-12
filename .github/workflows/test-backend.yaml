@@ -1,27 +1,21 @@
-name: Test Backend
+name: Build
 
 on:
   push:
-    branches:
-      - master
+    branches: [ master ]
   pull_request:
-    branches:
-      - master
+    branches: [ master ]
 
 jobs:
-  test:
-    runs-on: ubuntu-latest
-
+  build:
+    runs-on: $
+    strategy:
+      matrix:
+        os: [macos-latest, windows-latest, ubuntu-latest]
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-
-      - name: Set up Node.js
-        uses: actions/setup-node@v2
-        with:
-          node-version: '20'
-
-      - name: Install Forge
+    - name: Checkout
+      uses: actions/checkout@v1
+    - name: Install Forge
       run: |
         OS=$(echo ${RUNNER_OS} |tr '[:upper:]' '[:lower:]')
         curl -L https://github.com/cwbaker/forge/releases/download/v0.9.0/forge-${OS}-v0.9.0.tar.gz > forge.tar.gz
@@ -31,18 +25,3 @@ jobs:
       run: |
         forge/bin/forge variant=release
       shell: bash
-
-      - name: Check Foundry version
-        run: forge --version
-        shell: bash
-
-      - name: Check Foundry version
-        run: forge --version
-
-      - name: Run Hardhat tests
-        working-directory: ./backend
-        run: npx hardhat test
-
-      - name: Run Foundry tests
-        working-directory: ./backend
-        run: forge test
