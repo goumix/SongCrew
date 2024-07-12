@@ -1,27 +1,20 @@
-name: Build
+on: [push]
 
-on:
-  push:
-    branches: [ master ]
-  pull_request:
-    branches: [ master ]
+name: test
 
 jobs:
-  build:
-    runs-on: $
-    strategy:
-      matrix:
-        os: [macos-latest, windows-latest, ubuntu-latest]
+  check:
+    name: Foundry project
+    runs-on: ubuntu-latest
     steps:
-    - name: Checkout
-      uses: actions/checkout@v1
-    - name: Install Forge
-      run: |
-        OS=$(echo ${RUNNER_OS} |tr '[:upper:]' '[:lower:]')
-        curl -L https://github.com/cwbaker/forge/releases/download/v0.9.0/forge-${OS}-v0.9.0.tar.gz > forge.tar.gz
-        tar -xvf forge.tar.gz
-      shell: bash
-    - name: Build
-      run: |
-        forge/bin/forge variant=release
-      shell: bash
+      - uses: actions/checkout@v3
+        with:
+          submodules: recursive
+
+      - name: Install Foundry
+        uses: foundry-rs/foundry-toolchain@v1
+        with:
+          version: nightly
+
+      - name: Run tests
+        run: forge test -vvv
