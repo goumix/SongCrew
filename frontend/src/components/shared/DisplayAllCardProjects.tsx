@@ -41,7 +41,7 @@ const DisplayAllCardProjects = () => {
     <div className="flex flex-wrap justify-start gap-4 mt-6">
       {projects.map((project, index) => (
         <div key={index} className="w-[32%]">
-          <CardProject id={index} project={project} />
+          <CardProject project={project} />
         </div>
       ))}
     </div>

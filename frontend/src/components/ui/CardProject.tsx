@@ -2,9 +2,9 @@ import Link from "next/link"
 import { Badge } from "../ui/badge"
 import Card from "./Card"
 
-const CardProject = ({ id, project }: any) => {
+const CardProject = ({ project }: any) => {
   return (
-    <Link href={`/project/${id}`}>
+    <Link href={`/project/${project.details.id}`}>
       <Card>
         <div className="h-40 flex flex-col justify-around">
           <div className="flex flex-row items-center gap-4">
