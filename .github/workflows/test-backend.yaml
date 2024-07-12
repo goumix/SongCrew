@@ -30,6 +30,9 @@ jobs:
           curl -L https://foundry.paradigm.xyz | bash
           export PATH="$PATH:$HOME/.foundry/bin"
 
+      - name : Install Foundry dependencies
+        run: npm install --save-dev @nomicfoundation/hardhat-foundry
+
       - name: Run Hardhat tests
         working-directory: ./backend
         run: npx hardhat test
