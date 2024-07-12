@@ -25,6 +25,11 @@ jobs:
         working-directory: ./backend
         run: npm install
 
+      - name: Install Foundry
+        run: |
+          curl -L https://foundry.paradigm.xyz | bash
+          export PATH="$PATH:$HOME/.foundry/bin"
+
       - name: Run Hardhat tests
         working-directory: ./backend
         run: npx hardhat test
