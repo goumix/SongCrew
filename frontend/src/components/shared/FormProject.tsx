@@ -29,6 +29,7 @@ const FormProject = () => {
   const [projectTitle, setProjectTitle] = useState<string>("");
   const [genre, setGenre] = useState<string>("");
   const [projectDescription, setProjectDescription] = useState<string>("");
+  const [price, setPrice] = useState<number>(1);
   const [amount, setAmount] = useState<number>(25);
 
   const { data: hash, isPending, error, writeContract } = useWriteContract();
@@ -36,13 +37,13 @@ const FormProject = () => {
   const { toast } = useToast();
 
   const handleSubmit = async () => {
-    if (projectArtist || idSacem || projectTitle || genre || projectDescription || amount) {
+    if (projectArtist || idSacem || projectTitle || genre || projectDescription || price || amount) {
       writeContract({
         address: contractAddress,
         abi: contractAbi,
         functionName: 'createProject',
         account: address,
-        args: [projectArtist, idSacem, projectTitle, genre, projectDescription, amount]
+        args: [projectArtist, idSacem, projectTitle, genre, projectDescription, price, amount]
       })
     } else {
       toast({
@@ -67,6 +68,7 @@ const FormProject = () => {
       setProjectTitle('');
       setGenre('');
       setProjectDescription('');
+      setPrice(1);
       setAmount(25);
     }
   }, [isSuccess, toast])
@@ -80,7 +82,6 @@ const FormProject = () => {
         <Input type="text" placeholder="Id SACEM" onChange={(e) => setIdSacem(e.target.value)} />
         <p>Project title :</p>
         <Input type="text" placeholder="Project title" onChange={(e) => setProjectTitle(e.target.value)} />
-        {/* faire des categories */}
         <p>Genre :</p>
         <div className="flex flex-wrap gap-2">
           {categories.map((category, index) => (
@@ -95,11 +96,14 @@ const FormProject = () => {
         </div>
         <p>Project description :</p>
         <Input type="text" placeholder="Project description" onChange={(e) => setProjectDescription(e.target.value)} />
+        <p>Price : {price} ETH</p>
+        <Slider defaultValue={[1]} max={16} min={1} step={1} className="py-2" onValueChange={(e) => setPrice(e)}/>
         <div className="flex flex-row justify-between">
           <p>How much copyright would you like to transfer ?</p>
           <p>{amount}% of copyright for {amount} NTFs</p>
         </div>
         <Slider defaultValue={[25]} max={49} min={1} step={1} className="py-2" onValueChange={(e) => setAmount(e)}/>
+        <p>Price of an NFT : {price / amount} ETH</p>
         <Button disabled={isPending} onClick={handleSubmit}>Create project</Button>
       </div>
       <div className="w-1/2"></div>
