@@ -1,5 +1,6 @@
 import Marquee from "@/components/magicui/marquee";
 import { MarqueeDemo } from "@/components/shared/MarqueeProjects";
+import { PitchCarousel } from "@/components/shared/PitchCarousel";
 import Card from "@/components/ui/Card";
 import CardAdvisor from "@/components/ui/CardAdvisor";
 import Image from "next/image";
@@ -65,6 +66,9 @@ export default function Home() {
       </div>
       <div className="h-[300px]"></div>
       <MarqueeDemo />
+      <div className="w-full h-full flex items-center justify-center py-36">
+        <PitchCarousel />
+      </div>
     </div>
   );
 }
