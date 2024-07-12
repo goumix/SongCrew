@@ -1,10 +1,10 @@
+name: Test backend
+
 on: [push]
 
-name: test
-
 jobs:
-  check:
-    name: Foundry project
+  test:
+    name: Hardhat-Foundry project
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -13,8 +13,18 @@ jobs:
 
       - name: Install Foundry
         uses: foundry-rs/foundry-toolchain@v1
+        working-directory: ./backend
         with:
           version: nightly
 
-      - name: Run tests
+      - name: Install dependencies
+        working-directory: ./backend
+        run: npm install
+
+      - name: Run Hardhat tests
+        working-directory: ./backend
+        run: npx hardhat test
+        shell: bash
+
+      - name: Run Foundry tests
         run: forge test -vvv
