@@ -12,8 +12,8 @@ jobs:
           submodules: recursive
 
       - name: Install Foundry
-        uses: foundry-rs/foundry-toolchain@v1
         working-directory: ./backend
+        uses: foundry-rs/foundry-toolchain@v1
         with:
           version: nightly
 
@@ -27,4 +27,5 @@ jobs:
         shell: bash
 
       - name: Run Foundry tests
+        working-directory: ./backend
         run: forge test -vvv
