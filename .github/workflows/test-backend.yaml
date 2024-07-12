@@ -21,16 +21,17 @@ jobs:
         with:
           node-version: '20'
 
-      - name: Install dependencies
-        working-directory: ./backend
-        run: npm install
-
       - name: Install Foundry
         run: |
           curl -L https://foundry.paradigm.xyz | bash
+          echo "export PATH=\"\$HOME/.foundry/bin:\$PATH\"" >> $HOME/.bashrc
           source $HOME/.bashrc
           foundryup
-          export PATH="$PATH:$HOME/.foundry/bin"
+        shell: bash
+
+      - name: Check Foundry version
+        run: forge --version
+        shell: bash
 
       - name: Check Foundry version
         run: forge --version
