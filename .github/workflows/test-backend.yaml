@@ -13,8 +13,10 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
+    - uses: actions/checkout@v3
+        with:
+          submodules: recursive
+
 
       - name: Set up Node.js
         uses: actions/setup-node@v2
@@ -26,10 +28,7 @@ jobs:
         run: npm install
 
       - name: Install Foundry
-        run: |
-          curl -L https://foundry.paradigm.xyz | bash
-          source $HOME/.foundry/env
-          export PATH="$PATH:$HOME/.foundry/bin"
+        uses: foundry-rs/foundry-toolchain@v1
 
       - name: Check Foundry version
         run: forge --version
