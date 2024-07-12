@@ -8,6 +8,7 @@ import { useToast } from "@/components/ui/toaster"
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Slider } from '@/components/ui/slider';
+import BN from 'bn.js';
 
 const Project = ({ params }: { params: { id: string }}) => {
 
@@ -15,6 +16,7 @@ const Project = ({ params }: { params: { id: string }}) => {
 
   const [project, setProject] = useState<any>(null);
   const [amount, setAmount] = useState<number>(1);
+  const priceBuy = new BN(project?.priceNft).mul(new BN(amount));
 
   const { toast } = useToast();
 
@@ -31,14 +33,14 @@ const Project = ({ params }: { params: { id: string }}) => {
   const { data: hash, isPending, error, writeContract } = useWriteContract();
 
   const handleBuy = async () => {
-    console.log(amount, Number(project?.numberOfCopies))
     if (amount <= Number(project?.numberOfCopies)) {
       writeContract({
         address: contractAddress,
         abi: contractAbi,
         functionName: 'buyNft',
         account: address,
-        args: [params.id, amount]
+        args: [Number(project?.id), amount],
+        value: priceBuy,
       })
     } else {
       toast({
@@ -85,7 +87,7 @@ const Project = ({ params }: { params: { id: string }}) => {
             isConnected ? (
             <>
               <p><strong>Number of NFTs remaining :</strong> {Number(project?.numberOfCopies)}</p>
-              <p>Support the project by purchasing <strong>{amount}</strong> NFTs for <strong>{amount}</strong> of the artist's royalties</p>
+              <p>Support the project by purchasing <strong>{amount}</strong> NFTs for <strong>{amount}</strong> of the artist's royalties <br/>for a total of <strong>{(amount * Number(project?.priceNft)/10**18)}</strong> ETH</p>
               <div className='w-3/4 flex flex-row justify-around gap-4'>
                 <Slider defaultValue={[1]} max={Number(project?.numberOfCopies)} min={1} step={1} className="py-2" onValueChange={(e) => setAmount(e[0])}/>
                 <Button onClick={handleBuy}>Buy</Button>
