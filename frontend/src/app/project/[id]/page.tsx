@@ -11,7 +11,7 @@ import { Slider } from '@/components/ui/slider';
 
 const Project = ({ params }: { params: { id: string }}) => {
 
-  const { address } = useAccount();
+  const { address, isConnected } = useAccount();
 
   const [project, setProject] = useState<any>(null);
   const [amount, setAmount] = useState<number>(1);
@@ -82,6 +82,7 @@ const Project = ({ params }: { params: { id: string }}) => {
           {(Number(project?.numberOfCopies) === 0) ?
             <p><strong>Project is sold out</strong></p>
           : (
+            isConnected ? (
             <>
               <p><strong>Number of NFTs remaining :</strong> {Number(project?.numberOfCopies)}</p>
               <p>Support the project by purchasing <strong>{amount}</strong> NFTs for <strong>{amount}</strong> of the artist's royalties</p>
@@ -90,6 +91,9 @@ const Project = ({ params }: { params: { id: string }}) => {
                 <Button onClick={handleBuy}>Buy</Button>
               </div>
             </>
+            ) : (
+              <p><strong>Connect your wallet to purchase NFTs</strong></p>
+            )
           )}
         </div>
       </div>
