@@ -19,24 +19,27 @@ contract Songcrew is ERC1155 {
   /// @param title The title of the project
   /// @param genre The genre of the project
   /// @param description The description of the project
+  /// @param priceProject The ethers price of the project
   /// @param numberOfCopies The number of copies of the semi-fungible token
+  /// @param priceNft The ethers price of the semi-fungible token
   struct Project {
+    uint256 id;
     address addressArtist;
     string artist;
     string idSACEM;
     string title;
     string genre;
     string description;
-    uint numberOfCopies;
+    uint256 priceProject;
+    uint256 numberOfCopies;
+    uint256 priceNft;
   }
 
   /// @notice An array of all projects
   Project[] projects;
 
   /// @notice An event emitted when a project is created
-  event ProjectCreated(address addressArtist, string artist, string idSACEM, string title, string genre, string description, uint numberOfCopies);
-  /// @notice An event emitted when a project is created with the number of the project in the array
-  event ProjectCreatedNumber(uint256 projectId);
+  event ProjectCreated(uint256 id, address addressArtist, string artist, string idSACEM, string title, string genre, string description, uint256 priceProject, uint256 numberOfCopies, uint256 priceNft);
   /// @notice An event emitted when a project is bought
   event ProjectBought(address buyer, uint projectId, uint amount);
 
@@ -84,15 +87,20 @@ contract Songcrew is ERC1155 {
     string memory _title,
     string memory _genre,
     string memory _description,
+    uint256 _priceProject,
     uint _numberOfCopies
   ) public {
     require(msg.sender != address(0), "ERC1155: mint to the zero address");
-    projects.push(Project(msg.sender, _artist, _idSACEM, _title, _genre, _description, _numberOfCopies));
+    require(_numberOfCopies > 0, "ERC1155: number of copies must be greater than 0");
+    require(_numberOfCopies <= 70, "ERC1155: number of copies must be less than or equal to 70");
+    require(_priceProject > 0, "ERC1155: price of the project must be greater than 0");
+    require(_priceProject <= 16, "ERC1155: price of the project must be less than or equal to 16");
     uint256 newItemId = _tokenIds;
-    _tokenIds++;
+    _priceProject = _priceProject*10**18;
+    projects.push(Project(newItemId, msg.sender, _artist, _idSACEM, _title, _genre, _description, _priceProject, _numberOfCopies, _priceProject / _numberOfCopies));
     _mint(msg.sender, newItemId, _numberOfCopies, "");
-    emit ProjectCreated(msg.sender, _artist, _idSACEM, _title, _genre, _description, _numberOfCopies);
-    emit ProjectCreatedNumber(projects.length - 1);
+    emit ProjectCreated(newItemId, msg.sender, _artist, _idSACEM, _title, _genre, _description, _priceProject, _numberOfCopies, _priceProject / _numberOfCopies);
+    _tokenIds++;
   }
 
 
@@ -100,7 +108,13 @@ contract Songcrew is ERC1155 {
   /// @param _id The id of the project
   /// @param _amount The amount of the semi-fungible token
   function buyNft(uint _id, uint _amount) public payable {
+    require(_id < projects.length, "ERC1155: project does not exist");
+    require(_amount > 0, "ERC1155: amount must be greater than 0");
+    require(_amount <= projects[_id].numberOfCopies, "ERC1155: amount must be less than or equal to the number of copies");
+    require(msg.value >= projects[_id].priceNft * _amount, "ERC1155: insufficient funds");
     _setApprovalForAll(projects[_id].addressArtist, msg.sender, true);
+    address payable artistAddress = payable(projects[_id].addressArtist);
+    artistAddress.transfer(msg.value);
     safeTransferFrom(projects[_id].addressArtist, msg.sender, _id, _amount, "");
     projects[_id].numberOfCopies -= _amount;
     _setApprovalForAll(projects[_id].addressArtist, msg.sender, false);
