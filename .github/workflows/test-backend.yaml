@@ -12,7 +12,6 @@ jobs:
           submodules: recursive
 
       - name: Install Foundry
-        working-directory: ./backend
         uses: foundry-rs/foundry-toolchain@v1
         with:
           version: nightly
