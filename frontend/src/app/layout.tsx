@@ -5,6 +5,13 @@ import { Toaster } from "@/components/ui/toaster";
 import { cn } from "@/lib/utils"
 import RainbowkitAndWagmiProvider from "./RainbowKitAndWagmiProvider";
 import Layout from "@/components/shared/Layout";
+import clsx, { ClassValue } from "clsx";
+import { twMerge } from "tailwind-merge";
+
+export function pn(...inputs: ClassValue[]) {
+  return twMerge(clsx(inputs));
+}
+
 
 const fontSans = IBM_Plex_Sans({
   subsets: ["latin"],

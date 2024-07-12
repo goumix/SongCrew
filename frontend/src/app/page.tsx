@@ -1,3 +1,5 @@
+import Marquee from "@/components/magicui/marquee";
+import { MarqueeDemo } from "@/components/shared/MarqueeProjects";
 import Card from "@/components/ui/Card";
 import CardAdvisor from "@/components/ui/CardAdvisor";
 import Image from "next/image";
@@ -61,6 +63,8 @@ export default function Home() {
           ))}
         </div>
       </div>
+      <div className="h-[300px]"></div>
+      <MarqueeDemo />
     </div>
   );
 }
