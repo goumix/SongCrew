@@ -138,6 +138,37 @@ export const contractAbi = [
       {
         "indexed": false,
         "internalType": "address",
+        "name": "buyer",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "projectId",
+        "type": "uint256"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "amount",
+        "type": "uint256"
+      }
+    ],
+    "name": "ProjectBought",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "id",
+        "type": "uint256"
+      },
+      {
+        "indexed": false,
+        "internalType": "address",
         "name": "addressArtist",
         "type": "address"
       },
@@ -174,24 +205,23 @@ export const contractAbi = [
       {
         "indexed": false,
         "internalType": "uint256",
+        "name": "priceProject",
+        "type": "uint256"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
         "name": "numberOfCopies",
+        "type": "uint256"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "priceNft",
         "type": "uint256"
       }
     ],
     "name": "ProjectCreated",
-    "type": "event"
-  },
-  {
-    "anonymous": false,
-    "inputs": [
-      {
-        "indexed": false,
-        "internalType": "uint256",
-        "name": "projectId",
-        "type": "uint256"
-      }
-    ],
-    "name": "ProjectCreatedNumber",
     "type": "event"
   },
   {
@@ -382,6 +412,11 @@ export const contractAbi = [
       },
       {
         "internalType": "uint256",
+        "name": "_priceProject",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
         "name": "_numberOfCopies",
         "type": "uint256"
       }
@@ -397,6 +432,11 @@ export const contractAbi = [
     "outputs": [
       {
         "components": [
+          {
+            "internalType": "uint256",
+            "name": "id",
+            "type": "uint256"
+          },
           {
             "internalType": "address",
             "name": "addressArtist",
@@ -429,7 +469,17 @@ export const contractAbi = [
           },
           {
             "internalType": "uint256",
+            "name": "priceProject",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
             "name": "numberOfCopies",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "priceNft",
             "type": "uint256"
           }
         ],
@@ -467,6 +517,11 @@ export const contractAbi = [
       {
         "components": [
           {
+            "internalType": "uint256",
+            "name": "id",
+            "type": "uint256"
+          },
+          {
             "internalType": "address",
             "name": "addressArtist",
             "type": "address"
@@ -498,7 +553,17 @@ export const contractAbi = [
           },
           {
             "internalType": "uint256",
+            "name": "priceProject",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
             "name": "numberOfCopies",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "priceNft",
             "type": "uint256"
           }
         ],
