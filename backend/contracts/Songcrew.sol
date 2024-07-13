@@ -118,7 +118,8 @@ contract Songcrew is ERC1155, ReentrancyGuard {
     projects[_id].numberOfCopies -= _amount;
     _setApprovalForAll(projects[_id].addressArtist, msg.sender, true);
     address payable artistAddress = payable(projects[_id].addressArtist);
-    artistAddress.transfer(msg.value);
+    (bool success, ) = artistAddress.call{value: msg.value}("");
+    require(success, "Transfer failed.");
     safeTransferFrom(projects[_id].addressArtist, msg.sender, _id, _amount, "");
     _setApprovalForAll(projects[_id].addressArtist, msg.sender, false);
     emit ProjectBought(msg.sender, _id, _amount);
