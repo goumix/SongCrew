@@ -8,9 +8,11 @@ contract SongcrewTest is Test {
 
   address _user1 = makeAddr("User0");
   address _user2 = makeAddr("User1");
+  address _user3 = makeAddr("User2");
 
   event ProjectCreated(uint256 id, address addressArtist, string artist, string idSACEM, string title, string genre, string description, uint256 priceProject, uint256 numberOfCopies, uint256 priceNft);
   event ProjectBought(address buyer, uint projectId, uint amount);
+  event InvestorsAndArtistBought(address buyer, uint projectId, uint amount);
 
   Songcrew songcrew;
 
@@ -41,6 +43,13 @@ contract SongcrewTest is Test {
   function testFail_CreateProjectPriceProject20() public {
     vm.prank(_user1);
     songcrew.createProject("_artist", "_idSACEM", "_title", "_genre", "_description", 20, 10);
+  }
+
+  function testFail_CreateProjectProjectsLengthMore1000() public {
+    vm.prank(_user1);
+    for (uint i = 0; i < 1001; i++) {
+      songcrew.createProject("_artist", "_idSACEM", "_title", "_genre", "_description", 10, 10);
+    }
   }
 
   function test_CreateProjectPushInProjects() public {
@@ -102,12 +111,15 @@ contract SongcrewTest is Test {
     vm.prank(_user1);
     songcrew.createProject("_artist", "_idSACEM", "_title", "_genre", "_description", 10, 10);
     vm.prank(_user2);
+    vm.deal(_user1, 10 ether);
     vm.deal(_user2, 10 ether);
     songcrew.buyNft{value: 1 ether}(0, 1);
     uint256 balanceUser1 = songcrew.balanceOf(_user1, 0);
     assertEq(balanceUser1, 9);
+    assertEq(_user1.balance, 11 ether);
     uint256 balanceUser2 = songcrew.balanceOf(_user2, 0);
     assertEq(balanceUser2, 1);
+    assertEq(_user2.balance, 9 ether);
   }
 
   function test_BuyNftEmitEvent() public {
@@ -118,6 +130,57 @@ contract SongcrewTest is Test {
     vm.prank(_user2);
     vm.deal(_user2, 10 ether);
     songcrew.buyNft{value: 1 ether}(0, 1);
+  }
+
+  function testFail_PayInvestorsInsufficientFunds() public {
+    vm.prank(_user1);
+    songcrew.createProject("_artist", "_idSACEM", "_title", "_genre", "_description", 10, 10);
+    vm.prank(_user2);
+    vm.deal(_user2, 10 ether);
+    songcrew.buyNft{value: 1 ether}(0, 1);
+    vm.prank(_user3);
+    vm.deal(_user3, 10 ether);
+    songcrew.payInvestors{value: 0 ether}("_idSACEM");
+  }
+
+  function testFail_PayInvestorsProjectDoesntExist() public {
+    vm.prank(_user1);
+    songcrew.createProject("_artist", "_idSACEM", "_title", "_genre", "_description", 10, 10);
+    vm.prank(_user2);
+    vm.deal(_user2, 10 ether);
+    songcrew.buyNft{value: 1 ether}(0, 1);
+    vm.prank(_user3);
+    vm.deal(_user3, 10 ether);
+    songcrew.payInvestors{value: 1 ether}("_voila");
+  }
+
+  function test_PayInvestors() public {
+    vm.prank(_user1);
+    songcrew.createProject("_artist", "_idSACEM", "_title", "_genre", "_description", 10, 10);
+    vm.prank(_user2);
+    vm.deal(_user1, 10 ether);
+    vm.deal(_user2, 10 ether);
+    songcrew.buyNft{value: 1 ether}(0, 1);
+    vm.prank(_user3);
+    vm.deal(_user3, 100 ether);
+    songcrew.payInvestors{value: 100 ether}("_idSACEM");
+    assertEq(_user1.balance, 110 ether);
+    assertEq(_user2.balance, 10 ether);
+    assertEq(_user3.balance, 0 ether);
+  }
+
+  function test_PayInvestorsEmitEvent() public {
+    vm.prank(_user1);
+    songcrew.createProject("_artist", "_idSACEM", "_title", "_genre", "_description", 10, 10);
+    vm.prank(_user2);
+    vm.deal(_user1, 10 ether);
+    vm.deal(_user2, 10 ether);
+    songcrew.buyNft{value: 1 ether}(0, 1);
+    vm.expectEmit(true, false, false, true);
+    emit InvestorsAndArtistBought(address(_user3), 0, 100 ether);
+    vm.prank(_user3);
+    vm.deal(_user3, 100 ether);
+    songcrew.payInvestors{value: 100 ether}("_idSACEM");
   }
 
 }
