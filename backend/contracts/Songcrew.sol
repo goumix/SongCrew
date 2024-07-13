@@ -3,11 +3,13 @@ pragma solidity ^0.8.24;
 
 // OpenZeppelin library for semi-fungible tokens
 import "@openzeppelin/contracts/token/ERC1155/ERC1155.sol";
+// OpenZeppelin library for reentrancy guard
+import "@openzeppelin/contracts/utils/ReentrancyGuard.sol";
 
 /// @title Songcrew contract
 /// @author Brault Natheo
 /// @notice You can use this contract to create a music project
-contract Songcrew is ERC1155 {
+contract Songcrew is ERC1155, ReentrancyGuard {
 
   /// @notice The tokenIds of the projects
   uint256 private _tokenIds;
@@ -107,16 +109,16 @@ contract Songcrew is ERC1155 {
   /// @notice Buy Nft of a project
   /// @param _id The id of the project
   /// @param _amount The amount of the semi-fungible token
-  function buyNft(uint _id, uint _amount) public payable {
+  function buyNft(uint _id, uint _amount) public payable nonReentrant {
     require(_id < projects.length, "ERC1155: project does not exist");
     require(_amount > 0, "ERC1155: amount must be greater than 0");
     require(_amount <= projects[_id].numberOfCopies, "ERC1155: amount must be less than or equal to the number of copies");
     require(msg.value >= projects[_id].priceNft * _amount, "ERC1155: insufficient funds");
+    projects[_id].numberOfCopies -= _amount;
     _setApprovalForAll(projects[_id].addressArtist, msg.sender, true);
     address payable artistAddress = payable(projects[_id].addressArtist);
     artistAddress.transfer(msg.value);
     safeTransferFrom(projects[_id].addressArtist, msg.sender, _id, _amount, "");
-    projects[_id].numberOfCopies -= _amount;
     _setApprovalForAll(projects[_id].addressArtist, msg.sender, false);
     emit ProjectBought(msg.sender, _id, _amount);
   }
