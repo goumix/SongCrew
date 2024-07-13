@@ -82,7 +82,10 @@ contract Songcrew is ERC1155, ReentrancyGuard {
   // ::::::::::::: SETTERS ::::::::::::: //
 
   /// @notice Create a project
-  /// @dev The function requires the sender to be different from the zero address
+  /// @dev The function requires the sender to be different from the zero address,
+  /// the number of copies to be greater than 0 and less than or equal to 70,
+  /// the price of the project to be greater than 0 and less than or equal to 16
+  /// and the number of projects to be less than 1000
   function createProject(
     string memory _artist,
     string memory _idSACEM,
@@ -98,10 +101,12 @@ contract Songcrew is ERC1155, ReentrancyGuard {
     require(_priceProject > 0, "ERC1155: price of the project must be greater than 0");
     require(_priceProject <= 16, "ERC1155: price of the project must be less than or equal to 16");
     require(projects.length < 1000, "ERC1155: number of projects must be less than 1000");
+
     uint256 newItemId = _tokenIds;
     _priceProject = _priceProject*10**18;
     projects.push(Project(newItemId, msg.sender, _artist, _idSACEM, _title, _genre, _description, _priceProject, _numberOfCopies, _priceProject / _numberOfCopies));
     _mint(msg.sender, newItemId, _numberOfCopies, "");
+
     emit ProjectCreated(newItemId, msg.sender, _artist, _idSACEM, _title, _genre, _description, _priceProject, _numberOfCopies, _priceProject / _numberOfCopies);
     _tokenIds++;
   }
@@ -110,11 +115,15 @@ contract Songcrew is ERC1155, ReentrancyGuard {
   /// @notice Buy Nft of a project
   /// @param _id The id of the project
   /// @param _amount The amount of the semi-fungible token
+  /// @dev The function requires the id of the project to be less than the length of the projects array,
+  /// the amount to be greater than 0 and less than or equal to the number of copies of the project,
+  /// the value to be greater than or equal to the price of the semi-fungible token multiplied by the amount,
   function buyNft(uint _id, uint _amount) public payable nonReentrant {
     require(_id < projects.length, "ERC1155: project does not exist");
     require(_amount > 0, "ERC1155: amount must be greater than 0");
     require(_amount <= projects[_id].numberOfCopies, "ERC1155: amount must be less than or equal to the number of copies");
     require(msg.value >= projects[_id].priceNft * _amount, "ERC1155: insufficient funds");
+
     projects[_id].numberOfCopies -= _amount;
     _setApprovalForAll(projects[_id].addressArtist, msg.sender, true);
     address payable artistAddress = payable(projects[_id].addressArtist);
@@ -122,6 +131,7 @@ contract Songcrew is ERC1155, ReentrancyGuard {
     require(success, "Transfer failed.");
     safeTransferFrom(projects[_id].addressArtist, msg.sender, _id, _amount, "");
     _setApprovalForAll(projects[_id].addressArtist, msg.sender, false);
+
     emit ProjectBought(msg.sender, _id, _amount);
   }
 }
