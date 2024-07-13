@@ -146,12 +146,16 @@ contract Songcrew is ERC1155, ReentrancyGuard {
   /// @dev The function requires the idSACEM to be equal to the idSACEM of the project,
   /// it pays each person who owns the artist's NFT
   function payInvestors(string memory _idSACEM) public payable nonReentrant {
+    require(msg.value > 0, "ERC1155: insufficient funds");
+
     Project memory project;
     for (uint i = 0; i < projects.length; i++) {
       if (keccak256(abi.encodePacked(projects[i].idSACEM)) == keccak256(abi.encodePacked(_idSACEM))) {
         project = projects[i];
       }
     }
+
+    require(keccak256(abi.encodePacked(project.idSACEM)) == keccak256(abi.encodePacked(_idSACEM)), "ERC1155: project does not exist");
 
     address[] memory projectInvestors = investors[project.id];
     uint256 totalBalance = 100;
