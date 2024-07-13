@@ -97,6 +97,7 @@ contract Songcrew is ERC1155, ReentrancyGuard {
     require(_numberOfCopies <= 70, "ERC1155: number of copies must be less than or equal to 70");
     require(_priceProject > 0, "ERC1155: price of the project must be greater than 0");
     require(_priceProject <= 16, "ERC1155: price of the project must be less than or equal to 16");
+    require(projects.length < 1000, "ERC1155: number of projects must be less than 1000");
     uint256 newItemId = _tokenIds;
     _priceProject = _priceProject*10**18;
     projects.push(Project(newItemId, msg.sender, _artist, _idSACEM, _title, _genre, _description, _priceProject, _numberOfCopies, _priceProject / _numberOfCopies));
