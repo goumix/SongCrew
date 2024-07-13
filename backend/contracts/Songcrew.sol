@@ -40,10 +40,15 @@ contract Songcrew is ERC1155, ReentrancyGuard {
   /// @notice An array of all projects
   Project[] projects;
 
+  /// @notice A mapping of all investors
+  mapping(uint => address[]) private investors;
+
   /// @notice An event emitted when a project is created
   event ProjectCreated(uint256 id, address addressArtist, string artist, string idSACEM, string title, string genre, string description, uint256 priceProject, uint256 numberOfCopies, uint256 priceNft);
   /// @notice An event emitted when a project is bought
   event ProjectBought(address buyer, uint projectId, uint amount);
+  /// @notice An event emitted when investors and artist are bought
+  event InvestorsAndArtistBought(address buyer, uint projectId, uint amount);
 
   constructor() ERC1155("https://songcrew.com/api/project/{id}.json") {}
 
@@ -131,7 +136,38 @@ contract Songcrew is ERC1155, ReentrancyGuard {
     require(success, "Transfer failed.");
     safeTransferFrom(projects[_id].addressArtist, msg.sender, _id, _amount, "");
     _setApprovalForAll(projects[_id].addressArtist, msg.sender, false);
+    investors[_id].push(msg.sender);
 
     emit ProjectBought(msg.sender, _id, _amount);
+  }
+
+  /// @notice Pays each person who owns the artist's NFT
+  /// @param _idSACEM The idSACEM of the project
+  /// @dev The function requires the idSACEM to be equal to the idSACEM of the project,
+  /// it pays each person who owns the artist's NFT
+  function payInvestors(string memory _idSACEM) public payable nonReentrant {
+    Project memory project;
+    for (uint i = 0; i < projects.length; i++) {
+      if (keccak256(abi.encodePacked(projects[i].idSACEM)) == keccak256(abi.encodePacked(_idSACEM))) {
+        project = projects[i];
+      }
+    }
+
+    address[] memory projectInvestors = investors[project.id];
+    uint256 totalBalance = 100;
+
+    for (uint i = 0; i < projectInvestors.length; i++) {
+      address payable investorAddress = payable(projectInvestors[i]);
+      uint256 balance = balanceOf(investorAddress, project.id);
+      totalBalance -= balance;
+      (bool success, ) = investorAddress.call{value: ((msg.value/100)*balance)}("");
+      require(success, "Transfer failed.");
+    }
+
+    address payable artistAddress = payable(project.addressArtist);
+    (bool successArtist, ) = artistAddress.call{value: ((msg.value/100)*totalBalance)}("");
+    require(successArtist, "Transfer failed.");
+
+    emit InvestorsAndArtistBought(msg.sender, project.id, msg.value);
   }
 }
