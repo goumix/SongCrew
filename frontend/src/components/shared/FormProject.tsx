@@ -104,12 +104,12 @@ const FormProject = () => {
         <p>Project description :</p>
         <Input type="text" placeholder="Project description" onChange={(e) => setProjectDescription(e.target.value)} />
         <p>Price : {price} ETH</p>
-        <Slider defaultValue={[1]} max={16} min={1} step={1} className="py-2" onValueChange={(e) => setPrice(e)}/>
+        <Slider defaultValue={[1]} max={16} min={1} step={1} className="py-2" onValueChange={(e) => setPrice(e[0])}/>
         <div className="flex flex-row justify-between">
           <p>How much copyright would you like to transfer ?</p>
           <p>{amount}% of copyright for {amount} NTFs</p>
         </div>
-        <Slider defaultValue={[25]} max={49} min={1} step={1} className="py-2" onValueChange={(e) => setAmount(e)}/>
+        <Slider defaultValue={[25]} max={49} min={1} step={1} className="py-2" onValueChange={(e) => setAmount(e[0])}/>
         <p>Price of an NFT : {price / amount} ETH</p>
         <Button disabled={isPending || !projectArtist || !idSacem || !projectTitle || !genre || !projectDescription || !price || !amount} onClick={handleSubmit}>Create project</Button>
       </div>

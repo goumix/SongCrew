@@ -9,17 +9,17 @@ import { useAccount } from "wagmi";
 
 const DisplayAllCardProjectsFollowing = () => {
   const [projects, setProjects] = useState<any[]>([]);
-  const [balanceSender, setBalanceSender] = useState<any[]>([]);
+  const [balanceSender, setBalanceSender] = useState<number[]>([]);
 
   const { address } = useAccount();
 
   const getProjects = async () => {
-    const getBalanceSender = await publicClient.readContract({
+    const getBalanceSender: number[] = await publicClient.readContract({
       abi: contractAbi,
       address: contractAddress,
       functionName: 'getBalanceOfAllProjectsForTheSender',
       account: address
-    });
+    }) as number[];
 
     const projectSender = await Promise.all(getBalanceSender.map(async (project: any, index: number) => {
       if (Number(project) !== 0) {

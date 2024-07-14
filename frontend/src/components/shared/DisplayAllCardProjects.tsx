@@ -13,7 +13,7 @@ const DisplayAllCardProjects = () => {
     const depositEvents = await publicClient.getLogs({
       address: contractAddress,
       event: parseAbiItem('event ProjectCreated(uint256 id, address addressArtist, string artist, string idSACEM, string title, string genre, string description, uint256 priceProject, uint256 numberOfCopies, uint256 priceNft)'),
-      fromBlock: 0n,
+      fromBlock: BigInt(0),
       toBlock: 'latest'
     });
 
