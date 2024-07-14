@@ -6,7 +6,6 @@ import {
 } from '@rainbow-me/rainbowkit';
 import { WagmiProvider } from 'wagmi';
 import {
-  hardhat,
   sepolia
 } from 'wagmi/chains';
 import {
@@ -17,7 +16,7 @@ import {
 const config = getDefaultConfig({
   appName: 'SongCrew',
   projectId: 'd9ff2bf7f17a95f6f5a3f4c1785efd1c',
-  chains: [hardhat, sepolia],
+  chains: [sepolia],
   ssr: true,
 });
 
