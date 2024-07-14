@@ -159,6 +159,31 @@ export const contractAbi = [
         "type": "uint256"
       }
     ],
+    "name": "InvestorsAndArtistBought",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "internalType": "address",
+        "name": "buyer",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "projectId",
+        "type": "uint256"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "amount",
+        "type": "uint256"
+      }
+    ],
     "name": "ProjectBought",
     "type": "event"
   },
@@ -602,6 +627,19 @@ export const contractAbi = [
       }
     ],
     "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "string",
+        "name": "_idSACEM",
+        "type": "string"
+      }
+    ],
+    "name": "payInvestors",
+    "outputs": [],
+    "stateMutability": "payable",
     "type": "function"
   },
   {
