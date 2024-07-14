@@ -26,7 +26,7 @@ const adivsors = [
     link: "https://www.linkedin.com/in/thomas-desmay-b8a8b2198/",
   },
   {
-    name: "test",
+    name: "Goumix",
     role: "Blockchain developer",
     image: "/Goumix.jpeg",
     link: "https://github.com/goumix",
