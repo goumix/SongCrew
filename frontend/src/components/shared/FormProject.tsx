@@ -57,6 +57,13 @@ const FormProject = () => {
   const { isLoading: isConfirming, isSuccess, error: errorConfirming } = useWaitForTransactionReceipt({ hash });
 
   useEffect(() => {
+    if (isPending) {
+      toast({
+        title: "Transaction pending",
+        description: "Your transaction is pending",
+        className: 'bg-yellow-500'
+      });
+    }
     if (isSuccess) {
       toast({
           title: "Project created",
@@ -71,7 +78,7 @@ const FormProject = () => {
       setPrice(1);
       setAmount(25);
     }
-  }, [isSuccess, toast])
+  }, [isSuccess, isPending, toast])
 
   return (
     <div className="h-screen flex flex-row mt-8">
@@ -104,7 +111,7 @@ const FormProject = () => {
         </div>
         <Slider defaultValue={[25]} max={49} min={1} step={1} className="py-2" onValueChange={(e) => setAmount(e)}/>
         <p>Price of an NFT : {price / amount} ETH</p>
-        <Button disabled={isPending} onClick={handleSubmit}>Create project</Button>
+        <Button disabled={isPending || !projectArtist || !idSacem || !projectTitle || !genre || !projectDescription || !price || !amount} onClick={handleSubmit}>Create project</Button>
       </div>
       <div className="w-1/2"></div>
     </div>
