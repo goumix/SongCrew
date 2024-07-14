@@ -57,6 +57,13 @@ const Project = ({ params }: { params: { id: string }}) => {
   }, []);
 
   useEffect(() => {
+    if (isPending) {
+      toast({
+        title: "Purchasing project",
+        description: "Your project is being purchased",
+        className: 'bg-sky-500'
+      });
+    }
     if (isSuccess) {
       toast({
           title: "Project purchased",
@@ -66,7 +73,7 @@ const Project = ({ params }: { params: { id: string }}) => {
       setAmount(1);
       getProject();
     }
-  }, [isSuccess, toast])
+  }, [isSuccess, isPending, toast])
 
   return (
     <div className='w-full min-h-screen flex flex-col p-10'>
@@ -89,7 +96,7 @@ const Project = ({ params }: { params: { id: string }}) => {
               <p>Support the project by purchasing <strong>{amount}</strong> NFTs for <strong>{amount}</strong> of the artist's royalties <br/>for a total of <strong>{(amount * Number(project?.priceNft)/10**18)}</strong> ETH</p>
               <div className='w-3/4 flex flex-row justify-around gap-4'>
                 <Slider defaultValue={[1]} max={Number(project?.numberOfCopies)} min={1} step={1} className="py-2" onValueChange={(e) => setAmount(e[0])}/>
-                <Button onClick={handleBuy}>Buy</Button>
+                <Button disabled={isPending} onClick={handleBuy}>Buy</Button>
               </div>
             </>
             ) : (
