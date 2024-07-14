@@ -8,7 +8,6 @@ import { useToast } from "@/components/ui/toaster"
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Slider } from '@/components/ui/slider';
-import BN from 'bn.js';
 
 const Project = ({ params }: { params: { id: string }}) => {
 
@@ -16,7 +15,6 @@ const Project = ({ params }: { params: { id: string }}) => {
 
   const [project, setProject] = useState<any>(null);
   const [amount, setAmount] = useState<number>(1);
-  const priceBuy = new BN(project?.priceNft).mul(new BN(amount));
 
   const { toast } = useToast();
 
@@ -40,7 +38,8 @@ const Project = ({ params }: { params: { id: string }}) => {
         functionName: 'buyNft',
         account: address,
         args: [Number(project?.id), amount],
-        value: priceBuy,
+        value: BigInt(project?.priceNft) * BigInt(amount),
+        gas: BigInt(1000000)
       })
     } else {
       toast({
