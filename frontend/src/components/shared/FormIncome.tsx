@@ -44,7 +44,7 @@ const FormIncome = () => {
       toast({
         title: "Processing",
         description: "Your transaction is being processed",
-        className: 'bg-sky-500'
+        className: 'bg-yellow-500'
       });
     }
     if (isSuccess) {
