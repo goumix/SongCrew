@@ -20,7 +20,6 @@ const DisplayAllCardProjectsFollowing = () => {
       functionName: 'getBalanceOfAllProjectsForTheSender',
       account: address
     });
-    setBalanceSender(getBalanceSender);
 
     const projectSender = await Promise.all(getBalanceSender.map(async (project: any, index: number) => {
       if (Number(project) !== 0) {
