@@ -21,7 +21,6 @@ const DisplayAllCardProjectsFollowing = () => {
       account: address
     });
     setBalanceSender(getBalanceSender);
-    console.log(getBalanceSender);
 
     const projectSender = await Promise.all(getBalanceSender.map(async (project: any, index: number) => {
       if (Number(project) !== 0) {
@@ -39,6 +38,7 @@ const DisplayAllCardProjectsFollowing = () => {
     }));
 
     setProjects(projectSender.filter((project: any) => project !== undefined));
+    setBalanceSender(getBalanceSender.filter((balance: any) => Number(balance) !== 0));
   };
 
   useEffect(() => {
