@@ -65,7 +65,7 @@ const FormIncome = () => {
         <Input type="text" placeholder="Id SACEM" onChange={(e) => setIdSacem(e.target.value)} />
         <p>Price : {price} ETH</p>
         <Input type="number" placeholder="Price" onChange={(e) => setPrice(Number(e.target.value))} />
-        <Button disabled={isPending} onClick={handleSubmit}>Create project</Button>
+        <Button disabled={isPending} onClick={handleSubmit}>Pay an artist</Button>
       </div>
       <div className="w-1/2"></div>
     </div>
