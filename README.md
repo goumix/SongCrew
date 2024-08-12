@@ -7,13 +7,6 @@ The platform is built with a robust backend using Foundry and Hardhat, and a mod
 
 [https://song-crew.vercel.app/](https://song-crew.vercel.app/)
 
-## Features
-
-- **Campaign Creation**: Artists can create campaigns for their projects, set funding goals, and deadlines.
-- **User Contributions**: Users can contribute to campaigns by sending funds via blockchain transactions.
-- **Campaign Tracking**: Users can track the progress of campaigns and see updates from the artists.
-- **Fund Withdrawal**: Once the goal is reached, artists can withdraw the funds to finance their projects.
-
 ## Prerequisites
 
 - Node.js and npm
