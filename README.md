@@ -1,6 +1,6 @@
 # SongCrew
 
-<img width="1512" alt="Screenshot 2024-08-27 at 09 32 03" src="https://github.com/user-attachments/assets/53d8fce6-ae35-4ab7-9f7a-720bd0f24a4b">
+<img width="1000" alt="Screenshot SongCrew" src="https://github.com/user-attachments/assets/53d8fce6-ae35-4ab7-9f7a-720bd0f24a4b">
 
 
 ## Description
